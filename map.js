@@ -1,23 +1,8 @@
 "use strict";
 
 window.onload = function() {
-  $.cookie('test', '1', {secure:true});
-};
-
-let map;
-
-function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: {
-      lat: 34.0785302,
-      lng: 134.5598359
-    },
-    zoom: 15
-  });
-  map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
-
-
-  const markerData = [
+  $.cookie.json = true;
+  let markerData = [
     {
     	pos: { lat: 34.0785302, lng: 134.5598359 },
 	    title: "徳島大学情報センター",
@@ -33,6 +18,23 @@ function initMap() {
       infoWindowContent: "<h3>徳島大学付属図書館</h3><p><img src='https://lh5.googleusercontent.com/p/AF1QipO5Z_pZaO47_pWD7qtvIwPQoMom5hzcirDBktkO=w408-h306-k-no' width='200px'></p>"
     },
   ];
+	
+  $.cookie('markerData', markerData, {secure:true});
+};
+
+let map;
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: {
+      lat: 34.0785302,
+      lng: 134.5598359
+    },
+    zoom: 15
+  });
+  map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+
+  const markerData = $.cookie('markerData');
 
   for (const mark of markerData) {
     (function() {
@@ -50,7 +52,6 @@ function initMap() {
 
         marker.addListener('click', function() {
           infoWindow.open(map, marker);
-	  alert($.cookie('test'));
         });
         if (mark.infoWindowOpen) {
           infoWindow.open(map, marker);
