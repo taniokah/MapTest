@@ -1,7 +1,7 @@
 "use strict";
 
 window.onload = function() {
-  $.cookie.json = true;
+  //$.cookie.json = true;
   let markerData = [
     {
     	pos: { lat: 34.0785302, lng: 134.5598359 },
@@ -19,7 +19,7 @@ window.onload = function() {
     },
   ];
 	
-  $.cookie('markerData', markerData, {secure:true});
+  $.cookie('markerData', JSON.stringify(markerData), {secure:true});
 };
 
 let map;
@@ -34,8 +34,8 @@ function initMap() {
   });
   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
 
-  $.cookie.json = true;
-  const markerData = $.cookie('markerData');
+  //$.cookie.json = true;
+  const markerData = JSON.parse($.cookie('markerData'));
 
   for (const mark of markerData) {
     (function() {
