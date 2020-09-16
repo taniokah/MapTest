@@ -1,5 +1,9 @@
 "use strict";
 
+window.onload = function() {
+  $.cookie('test', '1', {secure:true});
+};
+
 let map;
 
 function initMap() {
@@ -46,6 +50,7 @@ function initMap() {
 
         marker.addListener('click', function() {
           infoWindow.open(map, marker);
+	  alert($.cookie('test'));
         });
         if (mark.infoWindowOpen) {
           infoWindow.open(map, marker);
