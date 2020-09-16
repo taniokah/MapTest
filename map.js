@@ -34,6 +34,7 @@ function initMap() {
   });
   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
 
+  $.cookie.json = true;
   const markerData = $.cookie('markerData');
 
   for (const mark of markerData) {
