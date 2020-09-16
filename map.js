@@ -36,6 +36,7 @@ function initMap() {
 
   $.cookie.json = true;
   const markerData = $.cookie('markerData');
+  alert(markerData);
 
   for (const mark of markerData) {
     (function() {
