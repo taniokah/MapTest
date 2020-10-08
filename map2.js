@@ -107,7 +107,7 @@ function initMap() {
       '<td>' + position.timestamp + '</td>' +
       '</tr>';
     //$('#result').append(result);
-    console.log(result);, error, option)
+    console.log(result);
     const mark = markerData[0];
     (function() {
       const marker = new google.maps.Marker({
@@ -130,5 +130,5 @@ function initMap() {
         }
       }
     }());
-  }
+  }, error, option);
 }
