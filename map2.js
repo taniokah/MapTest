@@ -109,7 +109,7 @@ function initMap() {
     //$('#result').append(result);
     console.log(result);
     const mark = markerData[0];
-    const pos = { lat: position.coords.latitude, lng: position.coords.longitude },
+    const pos = {lat: position.coords.latitude, lng: position.coords.longitude};
     (function() {
       const marker = new google.maps.Marker({
         position: mark.pos,
