@@ -120,9 +120,9 @@ function initMap() {
 
       if (mark.infoWindowContent) {
         const infoWindow = new google.maps.InfoWindow({
-          content: "" + position.coords.latitude + "<br>"
-                  "," + position.coords.longitude + "<br>"
-                  "," + position.coords.speed + "<br>"
+          content: "" + position.coords.latitude + "<br>" +
+                  "," + position.coords.longitude + "<br>" +
+                  "," + position.coords.speed + "<br>" +
                   " (" + position.timestamp + ")";
                   //mark.infoWindowContent
         });
