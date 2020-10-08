@@ -12,7 +12,7 @@ window.onload = function() {
   let markerData = JSON.parse($.cookie('markerData'));
   if (!markerData && markerData.length > 0) {
     if ((new Date()).getTime() - markerData.slice(-1)[0].timestamp > 86400000) {
-      $.cookie('markerData', JSON.stringify([]]), {secure: true});
+      $.cookie('markerData', JSON.stringify([]), {secure: true});
     }
   }
 };
