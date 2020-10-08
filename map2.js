@@ -23,7 +23,7 @@ window.onload = function() {
 };
 
 var watchId;
-
+/*
 var success = function (position) {
   var result = '<tr>' +
     '<td>' + position.coords.latitude + '</td>' +
@@ -37,7 +37,7 @@ var success = function (position) {
     '</tr>';
   //$('#result').append(result);
   console.log(result);
-};
+};*/
 
 // 位置情報取得に失敗したとき呼ばれるcallback関数
 var error = function (error) {
@@ -95,5 +95,40 @@ function initMap() {
     }());
   }
 
-  navigator.geolocation.watchPosition(success, error, option)
+  navigator.geolocation.watchPosition(function (position) {
+    var result = '<tr>' +
+      '<td>' + position.coords.latitude + '</td>' +
+      '<td>' + position.coords.longitude + '</td>' +
+      '<td>' + position.coords.altitude + '</td>' +
+      '<td>' + position.coords.accuracy + '</td>' +
+      '<td>' + position.coords.altitudeAccuracy + '</td>' +
+      '<td>' + position.coords.heading + '</td>' +
+      '<td>' + position.coords.speed + '</td>' +
+      '<td>' + position.timestamp + '</td>' +
+      '</tr>';
+    //$('#result').append(result);
+    console.log(result);, error, option)
+    const mark = markerData[0];
+    (function() {
+      const marker = new google.maps.Marker({
+        position: mark.pos,
+        title:    mark.title,
+        icon:     mark.icon,
+        map: map
+      });
+
+      if (mark.infoWindowContent) {
+        const infoWindow = new google.maps.InfoWindow({
+          content: result//mark.infoWindowContent
+        });
+
+        marker.addListener('click', function() {
+          infoWindow.open(map, marker);
+        });
+        if (mark.infoWindowOpen) {
+          infoWindow.open(map, marker);
+        }
+      }
+    }());
+  }
 }
