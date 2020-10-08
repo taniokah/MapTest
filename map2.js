@@ -9,24 +9,15 @@ window.onload = function() {
 
   //$.cookie.json = true;
   //$.cookie('markerData', JSON.stringify(markerData), {secure: true});
+  let markerData = JSON.parse($.cookie('markerData'));
+  if (!markerData && markerData.length > 0) {
+    if ((new Date()).getTime() - markerData.slice(-1)[0].timestamp > 86400000) {
+      $.cookie('markerData', JSON.stringify([]]), {secure: true});
+    }
+  }
 };
 
 var watchId;
-/*
-var success = function (position) {
-  var result = '<tr>' +
-    '<td>' + position.coords.latitude + '</td>' +
-    '<td>' + position.coords.longitude + '</td>' +
-    '<td>' + position.coords.altitude + '</td>' +
-    '<td>' + position.coords.accuracy + '</td>' +
-    '<td>' + position.coords.altitudeAccuracy + '</td>' +
-    '<td>' + position.coords.heading + '</td>' +
-    '<td>' + position.coords.speed + '</td>' +
-    '<td>' + position.timestamp + '</td>' +
-    '</tr>';
-  //$('#result').append(result);
-  console.log(result);
-};*/
 
 // 位置情報取得に失敗したとき呼ばれるcallback関数
 var error = function (error) {
@@ -57,7 +48,7 @@ function initMap() {
   });
   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
 
-  navigator.geolocation.watchPosition(function (position) {
+  watchId = navigator.geolocation.watchPosition(function (position) {
     (function() {
       let mark = {
         latitude: position.coords.latitude,
@@ -88,7 +79,7 @@ function initMap() {
       });
 
       let markerData = JSON.parse($.cookie('markerData'));
-      markerData = markerData.length > 10 ? markerData.slice(-10) : markerData;
+      markerData = markerData.length > 2880 ? markerData.slice(-10) : markerData;
       markerData.push(mark);
 
       $.cookie('markerData', JSON.stringify(markerData), {secure: true});
