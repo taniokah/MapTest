@@ -72,7 +72,7 @@ function initMap() {
 
       const marker = new google.maps.Marker({
         position: {lat: mark.latitude, lng: mark.longitude},
-        title:    mark.timestamp,
+        title:    "" + mark.timestamp,
         icon:     "",
         map: map
       });
