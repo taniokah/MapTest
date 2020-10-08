@@ -25,7 +25,7 @@ window.onload = function() {
 var watchId;
 
 var success = function (position) {
-  var result = $('<tr>' +
+  var result = '<tr>' +
     '<td>' + position.coords.latitude + '</td>' +
     '<td>' + position.coords.longitude + '</td>' +
     '<td>' + position.coords.altitude + '</td>' +
@@ -34,17 +34,17 @@ var success = function (position) {
     '<td>' + position.coords.heading + '</td>' +
     '<td>' + position.coords.speed + '</td>' +
     '<td>' + position.timestamp + '</td>' +
-    '</tr>');
+    '</tr>';
   //$('#result').append(result);
   console.log(result);
 };
 
 // 位置情報取得に失敗したとき呼ばれるcallback関数
 var error = function (error) {
-  var result = $('<tr>' +
+  var result = '<tr>' +
     '<td>' + error.code + '</td>' +
     '<td>' + error.message + '</td>' +
-    '</tr>');
+    '</tr>';
   //$('#errorresult').append(result);
   console.error(result);
 };
