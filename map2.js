@@ -96,7 +96,7 @@ function initMap() {
   }
 
   navigator.geolocation.watchPosition(function (position) {
-    var result = '<tr>' +
+    /*var result = '<tr>' +
       '<td>' + position.coords.latitude + '</td>' +
       '<td>' + position.coords.longitude + '</td>' +
       '<td>' + position.coords.altitude + '</td>' +
@@ -105,29 +105,31 @@ function initMap() {
       '<td>' + position.coords.heading + '</td>' +
       '<td>' + position.coords.speed + '</td>' +
       '<td>' + position.timestamp + '</td>' +
-      '</tr>';
+      '</tr>';*/
     //$('#result').append(result);
     console.log(result);
     const mark = markerData[0];
+    const pos = { lat: position.coords.latitude, lng: position.coords.longitude },
     (function() {
       const marker = new google.maps.Marker({
         position: mark.pos,
-        title:    mark.title,
+        title:    "現在地",
         icon:     mark.icon,
         map: map
       });
 
       if (mark.infoWindowContent) {
         const infoWindow = new google.maps.InfoWindow({
-          content: result//mark.infoWindowContent
+          content: "" + position.coords.latitude + "<br>"
+                  "," + position.coords.longitude + "<br>"
+                  "," + position.coords.speed + "<br>"
+                  " (" + position.timestamp + ")";
+                  //mark.infoWindowContent
         });
 
         marker.addListener('click', function() {
           infoWindow.open(map, marker);
         });
-        if (mark.infoWindowOpen) {
-          infoWindow.open(map, marker);
-        }
       }
     }());
   }, error, option);
