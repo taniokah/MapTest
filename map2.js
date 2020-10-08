@@ -5,7 +5,10 @@ window.onload = function() {
   btn.addEventListener('click', function() {
     //const markerData = $.cookie('markerData');
     const markerData = localStorage.getItem('markerData');
-    window.open('mailto:tanioka.hiroki@tokushima-u.ac.jp?subject=gpstest&body=' + markerData);
+    if (markerData == null) {
+      markerData = [];
+    }
+    window.open('mailto:tanioka.hiroki@tokushima-u.ac.jp?subject=gpstest:' +  markerData.length + '&body=' + markerData);
   }, false);
 
   //$.cookie.json = true;
