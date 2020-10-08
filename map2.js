@@ -107,7 +107,7 @@ function initMap() {
       '<td>' + position.timestamp + '</td>' +
       '</tr>';*/
     //$('#result').append(result);
-    console.log(result);
+    //console.log(result);
     const mark = markerData[0];
     const pos = {lat: position.coords.latitude, lng: position.coords.longitude};
     (function() {
