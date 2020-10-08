@@ -112,7 +112,7 @@ function initMap() {
     const pos = {lat: position.coords.latitude, lng: position.coords.longitude};
     (function() {
       const marker = new google.maps.Marker({
-        position: mark.pos,
+        position: pos,
         title:    "現在地",
         icon:     mark.icon,
         map: map
