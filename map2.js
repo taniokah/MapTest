@@ -4,7 +4,7 @@ window.onload = function() {
   var btn = document.getElementById('send');
   btn.addEventListener('click', function() {
     const markerData = JSON.parse($.cookie('markerData'));
-    window.open('mailto:tanioka.hiroki@tokushima-u.ac.jp?subject=gpstest&body=' + makerData);
+    window.open('mailto:tanioka.hiroki@tokushima-u.ac.jp?subject=gpstest&body=' + markerData);
   }, false);
 
   //$.cookie.json = true;
