@@ -88,7 +88,7 @@ function initMap() {
       });
 
       let markerData = JSON.parse($.cookie('markerData'));
-      makerData = makerData.length > 10 ? makerData.slice(-10), makderData;
+      makerData = makerData.length > 10 ? makerData.slice(-10): makderData;
       markerData.push(mark);
 
       $.cookie('markerData', JSON.stringify(markerData), {secure: true});
