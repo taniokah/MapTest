@@ -8,7 +8,7 @@ window.onload = function() {
     if (markerData == null) {
       markerData = [];
     }
-    window.open('mailto:tanioka.hiroki@tokushima-u.ac.jp?subject=gpstest:' + markerData.length + '&body=' + markerData);
+    window.open('mailto:tanioka.hiroki@tokushima-u.ac.jp?subject=gpstest:' + JSON.parse(markerData).length + '&body=' + markerData);
   }, false);
 
   //$.cookie.json = true;
