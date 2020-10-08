@@ -123,7 +123,7 @@ function initMap() {
           content: "" + position.coords.latitude + "<br>" +
                   "," + position.coords.longitude + "<br>" +
                   "," + position.coords.speed + "<br>" +
-                  " (" + position.timestamp + ")";
+                  " (" + position.timestamp + ")"
                   //mark.infoWindowContent
         });
 
