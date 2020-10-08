@@ -51,10 +51,10 @@ let map;
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: {
-      lat: 34.0785302,
-      lng: 134.5598359
+      lat: 34.013395,
+      lng: 134.5194693
     },
-    zoom: 15
+    zoom: 18
   });
   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
 
