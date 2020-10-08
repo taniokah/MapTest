@@ -1,25 +1,14 @@
 "use strict";
 
 window.onload = function() {
-  //$.cookie.json = true;
-  let markerData = [
-    {
-    	pos: { lat: 34.0785302, lng: 134.5598359 },
-	    title: "徳島大学情報センター",
-      icon: "",
-      infoWindowOpen: true ,
-      infoWindowContent: "<h3>徳島大学情報センター</h3><p><img src='https://lh5.googleusercontent.com/p/AF1QipPFYULtooVYVBCalq4Yd8_CDIWp9Wi7lU-ihBQ7=w426-h240-k-no' width='200px'></p>"
-    },
-    {
-    	pos: { lat: 34.0769362, lng: 134.5594632 },
-      title: "徳島大学付属図書館",
-      icon: "",
-      infoWindowOpen: false,
-      infoWindowContent: "<h3>徳島大学付属図書館</h3><p><img src='https://lh5.googleusercontent.com/p/AF1QipO5Z_pZaO47_pWD7qtvIwPQoMom5hzcirDBktkO=w408-h306-k-no' width='200px'></p>"
-    },
-  ];
+  var btn = document.getElementById('send');
+  btn.addEventListener('click', function() {
+    const markerData = JSON.parse($.cookie('markerData'));
+    window.open('mailto:tanioka.hiroki@tokushima-u.ac.jp?subject=gpstest&body=' + makerData);
+  }, false);
 
-  $.cookie('markerData', JSON.stringify(markerData), {secure:true});
+  //$.cookie.json = true;
+  //$.cookie('markerData', JSON.stringify(markerData), {secure: true});
 };
 
 var watchId;
@@ -68,69 +57,39 @@ function initMap() {
   });
   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
 
-  //$.cookie.json = true;
-  const markerData = JSON.parse($.cookie('markerData'));
-
-  for (const mark of markerData) {
-    (function() {
-      const marker = new google.maps.Marker({
-        position: mark.pos,
-        title:    mark.title,
-        icon:     mark.icon,
-        map: map
-      });
-
-      if (mark.infoWindowContent) {
-        const infoWindow = new google.maps.InfoWindow({
-          content: mark.infoWindowContent
-        });
-
-        marker.addListener('click', function() {
-          infoWindow.open(map, marker);
-        });
-        if (mark.infoWindowOpen) {
-          infoWindow.open(map, marker);
-        }
-      }
-    }());
-  }
-
   navigator.geolocation.watchPosition(function (position) {
-    /*var result = '<tr>' +
-      '<td>' + position.coords.latitude + '</td>' +
-      '<td>' + position.coords.longitude + '</td>' +
-      '<td>' + position.coords.altitude + '</td>' +
-      '<td>' + position.coords.accuracy + '</td>' +
-      '<td>' + position.coords.altitudeAccuracy + '</td>' +
-      '<td>' + position.coords.heading + '</td>' +
-      '<td>' + position.coords.speed + '</td>' +
-      '<td>' + position.timestamp + '</td>' +
-      '</tr>';*/
-    //$('#result').append(result);
-    //console.log(result);
-    const mark = markerData[0];
     const pos = {lat: position.coords.latitude, lng: position.coords.longitude};
     (function() {
       const marker = new google.maps.Marker({
         position: pos,
         title:    "現在地",
-        icon:     mark.icon,
+        icon:     "",
         map: map
       });
 
-      if (mark.infoWindowContent) {
-        const infoWindow = new google.maps.InfoWindow({
-          content: "" + position.coords.latitude + "<br>" +
-                  "," + position.coords.longitude + "<br>" +
-                  "," + position.coords.speed + "<br>" +
-                  " (" + position.timestamp + ")"
-                  //mark.infoWindowContent
-        });
+      let mark = {
+        pos: {lat: position.coords.latitude, lng: position.coords.longitude},
+        title: "position.timestamp",
+        icon: "",
+        infoWindowOpen: true,
+        infoWindowCotent: "" + position.coords.latitude + "<br>" +
+                "," + position.coords.longitude + "<br>" +
+                "," + position.coords.speed + "<br>" +
+                " (" + position.timestamp + ")"
+      };
+      const infoWindow = new google.maps.InfoWindow({
+        content: mark.infoWindowContent
+      });
 
-        marker.addListener('click', function() {
-          infoWindow.open(map, marker);
-        });
-      }
+      marker.addListener('click', function() {
+        infoWindow.open(map, marker);
+      });
+
+      const markerData = JSON.parse($.cookie('markerData'));
+      markerData.push(mark);
+
+      $.cookie('markerData', JSON.stringify(markerData), {secure: true});
     }());
   }, error, option);
+
 }
