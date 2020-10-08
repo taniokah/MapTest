@@ -58,34 +58,37 @@ function initMap() {
   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
 
   navigator.geolocation.watchPosition(function (position) {
-    const pos = {lat: position.coords.latitude, lng: position.coords.longitude};
     (function() {
+      let mark = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        altitude: position.coords.altitude,
+        accuracy: position.coords.accuracy,
+        altitudeAccuracy: position.coords.altitudeAccuracy,
+        heading: position.coords.heading,
+        speed: position.coords.speed,
+        timestamp: position.timestamp
+      };
+
       const marker = new google.maps.Marker({
-        position: pos,
-        title:    "現在地",
+        position: {lat: mark.latitude, lng: mark.longitude},
+        title:    mark.timestamp,
         icon:     "",
         map: map
       });
 
-      let mark = {
-        pos: {lat: position.coords.latitude, lng: position.coords.longitude},
-        title: "position.timestamp",
-        icon: "",
-        infoWindowOpen: true,
-        infoWindowCotent: "" + position.coords.latitude + "<br>" +
-                "," + position.coords.longitude + "<br>" +
-                "," + position.coords.speed + "<br>" +
-                " (" + position.timestamp + ")"
-      };
       const infoWindow = new google.maps.InfoWindow({
-        content: mark.infoWindowContent
+        content: position.coords.latitude + "<br>" +
+                "," + position.coords.longitude + "<br>" +
+                "(" + position.coords.speed + ")"
       });
 
       marker.addListener('click', function() {
         infoWindow.open(map, marker);
       });
 
-      const markerData = JSON.parse($.cookie('markerData'));
+      let markerData = JSON.parse($.cookie('markerData'));
+      makerData = makerData.length > 10 ? makerData.slice(-10), makderData;
       markerData.push(mark);
 
       $.cookie('markerData', JSON.stringify(markerData), {secure: true});
