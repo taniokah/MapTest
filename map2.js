@@ -3,18 +3,25 @@
 window.onload = function() {
   var btn = document.getElementById('send');
   btn.addEventListener('click', function() {
-    const markerData = $.cookie('markerData');
+    //const markerData = $.cookie('markerData');
+    const markerData = localStorage.getItem('markerData');
     window.open('mailto:tanioka.hiroki@tokushima-u.ac.jp?subject=gpstest&body=' + markerData);
   }, false);
 
   //$.cookie.json = true;
   //$.cookie('markerData', JSON.stringify(markerData), {secure: true});
-  let markerData = JSON.parse($.cookie('markerData'));
-  if (!markerData && markerData.length > 0) {
+  //let markerData = JSON.parse($.cookie('markerData'));
+  let markerData = JSON.parse(localStorage.getItem('markerData'));
+  if (markerData == null) {
+    markerData = [];
+  }
+  if (markerData.length > 0) {
     if ((new Date()).getTime() - markerData.slice(-1)[0].timestamp > 86400000) {
-      $.cookie('markerData', JSON.stringify([]), {secure: true});
+      //$.cookie('markerData', JSON.stringify([]), {secure: true});
+      localStorage.setItem('markerData', JSON.stringify([]));
     }
   }
+  localStorage.setItem('markerData', JSON.stringify(markerData));
 };
 
 var watchId;
@@ -78,11 +85,18 @@ function initMap() {
         infoWindow.open(map, marker);
       });
 
-      let markerData = JSON.parse($.cookie('markerData'));
-      markerData = markerData.length > 2880 ? markerData.slice(-10) : markerData;
+      //let markerData = JSON.parse($.cookie('markerData'));
+      let markerData = JSON.parse(localStorage.getItem('markerData'));
+      if (markerData == null) {
+        markerData = [];
+      }
+      if (markerData.length > 0) {
+        markerData = markerData.length > 2880 ? markerData.slice(-10) : markerData;
+      }
       markerData.push(mark);
 
-      $.cookie('markerData', JSON.stringify(markerData), {secure: true});
+      //$.cookie('markerData', JSON.stringify(markerData), {secure: true});
+      localStorage.setItem('markerData', JSON.stringify(markerData));
     }());
   }, error, option);
 
