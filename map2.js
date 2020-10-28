@@ -1,5 +1,11 @@
 "use strict";
 
+var watchId;
+
+window.unload = function() {
+  window.navigator.geolocation.clearWatch(watchId);
+};
+
 window.onload = function() {
   var btn = document.getElementById('send');
   btn.addEventListener('click', function() {
@@ -26,8 +32,6 @@ window.onload = function() {
   }
   localStorage.setItem('markerData', JSON.stringify(markerData));
 };
-
-var watchId;
 
 // 位置情報取得に失敗したとき呼ばれるcallback関数
 var error = function (error) {
@@ -58,49 +62,51 @@ function initMap() {
   });
   map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
 
-  watchId = navigator.geolocation.watchPosition(function (position) {
-    (function() {
-      let mark = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        altitude: position.coords.altitude,
-        accuracy: position.coords.accuracy,
-        altitudeAccuracy: position.coords.altitudeAccuracy,
-        heading: position.coords.heading,
-        speed: position.coords.speed,
-        timestamp: position.timestamp
-      };
+  setInterval(function () {
+    watchId = navigator.geolocation.getCurrentPosition(function (position) {
+      (function() {
+        let mark = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          altitude: position.coords.altitude,
+          accuracy: position.coords.accuracy,
+          altitudeAccuracy: position.coords.altitudeAccuracy,
+          heading: position.coords.heading,
+          speed: position.coords.speed,
+          timestamp: position.timestamp
+        };
 
-      const marker = new google.maps.Marker({
-        position: {lat: mark.latitude, lng: mark.longitude},
-        title:    "" + mark.timestamp,
-        icon:     "",
-        map: map
-      });
+        const marker = new google.maps.Marker({
+          position: {lat: mark.latitude, lng: mark.longitude},
+          title:    "" + mark.timestamp,
+          icon:     "",
+          map: map
+        });
 
-      const infoWindow = new google.maps.InfoWindow({
-        content: position.coords.latitude + "<br>" +
-                "," + position.coords.longitude + "<br>" +
-                "(" + position.coords.speed + ")"
-      });
+        const infoWindow = new google.maps.InfoWindow({
+          content: position.coords.latitude + "<br>" +
+                  "," + position.coords.longitude + "<br>" +
+                  "(" + position.coords.speed + ")"
+        });
 
-      marker.addListener('click', function() {
-        infoWindow.open(map, marker);
-      });
+        marker.addListener('click', function() {
+          infoWindow.open(map, marker);
+        });
 
-      //let markerData = JSON.parse($.cookie('markerData'));
-      let markerData = JSON.parse(localStorage.getItem('markerData'));
-      if (markerData == null) {
-        markerData = [];
-      }
-      if (markerData.length > 0) {
-        markerData = markerData.length > 2880 ? markerData.slice(-10) : markerData;
-      }
-      markerData.push(mark);
+        //let markerData = JSON.parse($.cookie('markerData'));
+        let markerData = JSON.parse(localStorage.getItem('markerData'));
+        if (markerData == null) {
+          markerData = [];
+        }
+        if (markerData.length > 0) {
+          markerData = markerData.length > 2880 ? markerData.slice(-10) : markerData;
+        }
+        markerData.push(mark);
 
-      //$.cookie('markerData', JSON.stringify(markerData), {secure: true});
-      localStorage.setItem('markerData', JSON.stringify(markerData));
-    }());
-  }, error, option);
+        //$.cookie('markerData', JSON.stringify(markerData), {secure: true});
+        localStorage.setItem('markerData', JSON.stringify(markerData));
+      }());
+    }, error, option);
+  }, 10000);  
 
 }
